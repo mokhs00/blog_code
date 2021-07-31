@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 @Validated
 @Slf4j
@@ -25,10 +26,11 @@ public class UserApi {
 
     // user get
     @GetMapping
-    public ResponseEntity<User> getDto(@RequestParam String name,
-                                       @RequestParam Integer age,
-                                       @RequestParam String email,
-                                       @RequestParam String phone) {
+    public ResponseEntity<User> get(@RequestParam @NotBlank String name,
+                                    @RequestParam @Min(1) Integer age,
+                                    @RequestParam @Email String email,
+                                    @RequestParam @Pattern(regexp = "^\\d{2,3}-\\d{3,4}-\\d{4}$", message = "핸드폰 번호의 양식과 맞지 않습니다. 01x-xxx(x)-xxxx")
+                                            String phone) {
         User user = User.builder()
                 .name(name)
                 .age(age)
