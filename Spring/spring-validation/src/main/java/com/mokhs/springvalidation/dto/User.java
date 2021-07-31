@@ -9,6 +9,7 @@ import javax.validation.constraints.*;
 @Getter
 @Setter
 @ToString
+@Builder
 public class User {
     @NotBlank
     private String name;
