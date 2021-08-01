@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -83,5 +84,21 @@ public class GlobalExceptionHandler {
                 }).collect(Collectors.toList());
 
         return ResponseEntity.badRequest().body(collect);
+    }
+
+    /**
+     * Method Argument 타입이 일치하지 않을 때 발생
+     * ex) PathVariable 타입이 일치하지 않을 때
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        log.error("MethodArgumentTypeMismatchException", e);
+        String parameterName = e.getParameter().getParameterName();
+        String value = e.getValue().toString();
+
+        return ResponseEntity.badRequest().body(
+                "field : " + parameterName + ", "
+                + "value : " + value +", "
+                + "reason : typeMismatch");
     }
 }

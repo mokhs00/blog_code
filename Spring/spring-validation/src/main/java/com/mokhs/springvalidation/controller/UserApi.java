@@ -15,14 +15,12 @@ import javax.validation.constraints.*;
 @RequestMapping("/v1/user")
 public class UserApi {
 
-
     // user post
     @PostMapping
     public ResponseEntity<User> post(@RequestBody @Valid User dto) {
         log.info("post user : {}", dto);
         return ResponseEntity.ok(dto);
     }
-
 
     // user get
     @GetMapping
@@ -39,6 +37,12 @@ public class UserApi {
                 .build();
         log.info("get user : {}", user);
         return ResponseEntity.ok(user);
+    }
+
+
+    @GetMapping("{userId}")
+    public void findById(@PathVariable("userId") Long id) {
+
     }
 
 }
